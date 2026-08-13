@@ -12,6 +12,11 @@ from datetime import datetime, timezone
 import streamlit as st
 from fpdf import FPDF
 
+# Load Streamlit Cloud secrets as environment variables
+if hasattr(st, "secrets"):
+    for key, value in st.secrets.items():
+        os.environ[key] = str(value)
+
 # ──────────────────────────────────────────────
 # Database setup (inline, no API needed)
 # ──────────────────────────────────────────────
