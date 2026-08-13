@@ -10,3 +10,4 @@ streamlit
 requests
 fpdf2
 tavily-python
+langchain-tavily
