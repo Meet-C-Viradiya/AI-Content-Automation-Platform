@@ -396,11 +396,17 @@ with st.form("create_job_form", clear_on_submit=True):
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Auto-refresh
+# Auto-refresh (smooth, no blinking)
 if st.session_state.get("auto_refresh") and st.session_state.get("selected_job"):
     detail = fetch_job_detail(st.session_state["selected_job"])
     if detail and detail["status"] in ("pending", "processing"):
-        time.sleep(2)
+        with st.spinner("⏳ AI is generating your content... This may take up to a minute."):
+            while True:
+                time.sleep(3)
+                detail = fetch_job_detail(st.session_state["selected_job"])
+                if detail["status"] not in ("pending", "processing"):
+                    break
+        st.session_state["auto_refresh"] = False
         st.rerun()
     else:
         st.session_state["auto_refresh"] = False
