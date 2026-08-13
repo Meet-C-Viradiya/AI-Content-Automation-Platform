@@ -18,7 +18,9 @@ from fpdf import FPDF
 from sqlalchemy import create_engine, Column, DateTime, Integer, Text, String, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
-DATABASE_URL = "sqlite:///./data/automation.db"
+import tempfile
+DB_PATH = os.path.join(tempfile.gettempdir(), "automation.db")
+DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -57,7 +59,7 @@ class GeneratedContent(Base):
     job = relationship("Job", back_populates="content")
 
 
-os.makedirs("data", exist_ok=True)
+
 Base.metadata.create_all(bind=engine)
 
 
